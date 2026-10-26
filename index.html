@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="description" content="A special, interactive birthday surprise website made for Vaishnavi with cute missions, playful puppy vibes, and a sweet personalized letter.">
+  <meta name="theme-color" content="#FFF0F5">
+  <title>A Little Birthday Surprise for Vaishnavi 🐾</title>
+
+  <!-- Preconnect to Google Fonts with robust system fallbacks -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,400;0,600;0,700;0,800;0,900;1,600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient floating decorative background shapes -->
+  <div class="ambient-bg" aria-hidden="true">
+    <span class="floating-item float-1">🐾</span>
+    <span class="floating-item float-2">✨</span>
+    <span class="floating-item float-3">🌸</span>
+    <span class="floating-item float-4">🦴</span>
+    <span class="floating-item float-5">🎈</span>
+    <span class="floating-item float-6">⭐</span>
+    <span class="floating-item float-7">🐾</span>
+    <span class="floating-item float-8">💖</span>
+  </div>
+
+  <!-- Fullscreen Particle / Confetti Canvas -->
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+
+  <!-- Top Utilities Bar: Sound Toggle & Quick Mission Indicator -->
+  <header class="top-nav" role="banner">
+    <div class="nav-brand">
+      <span class="nav-badge">Mission: Vaishnavi's B'day</span>
+    </div>
+    <div class="nav-controls">
+      <button id="music-toggle-btn" class="icon-btn music-btn" aria-label="Toggle cozy music box birthday tune" title="Play birthday music box melody">
+        <span id="music-icon" aria-hidden="true">🎵</span>
+        <span class="btn-text">Music Box: <strong id="music-status">OFF</strong></span>
+      </button>
+      <button id="sound-toggle-btn" class="icon-btn" aria-label="Toggle playful sound effects" title="Toggle sound effects">
+        <span id="sound-icon" aria-hidden="true">🔔</span>
+        <span class="btn-text">Sound: <strong id="sound-status">ON</strong></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Multi-step Mission App Container -->
+  <main class="app-wrapper" id="main-content">
+
+    <!-- Progress Tracker (Hidden on welcome, visible during missions) -->
+    <nav class="mission-progress-bar" id="progress-bar" aria-label="Mission progress" style="display: none;">
+      <div class="progress-step active" id="step-dot-1" title="Mission 1">
+        <span class="step-num">1</span>
+        <span class="step-label">Assistant</span>
+      </div>
+      <div class="step-connector" id="connector-1"></div>
+      <div class="progress-step" id="step-dot-2" title="Mission 2">
+        <span class="step-num">2</span>
+        <span class="step-label">Notices</span>
+      </div>
+      <div class="step-connector" id="connector-2"></div>
+      <div class="progress-step" id="step-dot-3" title="Mission 3">
+        <span class="step-num">3</span>
+        <span class="step-label">Wish 🕯️</span>
+      </div>
+      <div class="step-connector" id="connector-3"></div>
+      <div class="progress-step" id="step-dot-4" title="Mission 4">
+        <span class="step-num">4</span>
+        <span class="step-label">Letter & Gift</span>
+      </div>
+    </nav>
+
+    <!-- ==============================================
+         SCREEN 0: LANDING / OPENING SCREEN
+         ============================================== -->
+    <section class="screen-view active" id="screen-welcome" aria-labelledby="welcome-heading">
+      <div class="card card-welcome">
+        
+        <!-- Animated SVG Puppy Illustration with Interactive "Pet the Puppy" Zone -->
+        <div class="puppy-interactive-container" id="puppy-pet-zone" role="button" tabindex="0" aria-label="Tap to pet the birthday puppy">
+          <div class="hero-illustration" aria-hidden="true">
+            <svg class="puppy-svg" id="puppy-svg-elem" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="furGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FFD6A5" />
+                  <stop offset="100%" stop-color="#FFB37C" />
+                </linearGradient>
+                <linearGradient id="earGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#E28743" />
+                  <stop offset="100%" stop-color="#C56A2B" />
+                </linearGradient>
+                <linearGradient id="hatGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FF6F9F" />
+                  <stop offset="100%" stop-color="#9A7BFF" />
+                </linearGradient>
+              </defs>
+
+              <!-- Tail with wagging animation -->
+              <path class="puppy-tail" id="puppy-tail-elem" d="M175 160 Q215 145 205 115 Q195 135 170 150" fill="#E28743" stroke="#C56A2B" stroke-width="3" stroke-linecap="round"/>
+
+              <!-- Puppy Body -->
+              <ellipse cx="120" cy="170" rx="58" ry="48" fill="url(#furGrad)" stroke="#C56A2B" stroke-width="3"/>
+              <!-- Puppy Chest Patch -->
+              <ellipse cx="120" cy="180" rx="34" ry="28" fill="#FFF8EE"/>
+
+              <!-- Paws -->
+              <ellipse cx="88" cy="208" rx="16" ry="12" fill="#FFF8EE" stroke="#C56A2B" stroke-width="2.5"/>
+              <ellipse cx="152" cy="208" rx="16" ry="12" fill="#FFF8EE" stroke="#C56A2B" stroke-width="2.5"/>
+              <circle cx="82" cy="209" r="2.5" fill="#C56A2B"/>
+              <circle cx="88" cy="207" r="2.5" fill="#C56A2B"/>
+              <circle cx="94" cy="209" r="2.5" fill="#C56A2B"/>
+              <circle cx="146" cy="209" r="2.5" fill="#C56A2B"/>
+              <circle cx="152" cy="207" r="2.5" fill="#C56A2B"/>
+              <circle cx="158" cy="209" r="2.5" fill="#C56A2B"/>
+
+              <!-- Ears with gentle wiggling -->
+              <path class="puppy-ear ear-left" d="M68 95 Q35 110 45 155 Q62 170 78 135 Z" fill="url(#earGrad)" stroke="#A04C15" stroke-width="3"/>
+              <path class="puppy-ear ear-right" d="M172 95 Q205 110 195 155 Q178 170 162 135 Z" fill="url(#earGrad)" stroke="#A04C15" stroke-width="3"/>
+
+              <!-- Head -->
+              <circle cx="120" cy="115" r="54" fill="url(#furGrad)" stroke="#C56A2B" stroke-width="3"/>
+
+              <!-- Snout -->
+              <ellipse cx="120" cy="132" rx="26" ry="20" fill="#FFF8EE" stroke="#C56A2B" stroke-width="2"/>
+              <!-- Nose -->
+              <path d="M112 122 Q120 120 128 122 Q125 131 120 133 Q115 131 112 122 Z" fill="#4A2810"/>
+              <ellipse cx="118" cy="123" rx="2" ry="1" fill="#FFFFFF"/>
+              <!-- Mouth and Tongue -->
+              <path d="M120 133 L120 138" stroke="#4A2810" stroke-width="2" stroke-linecap="round"/>
+              <path d="M112 138 Q120 144 128 138" stroke="#4A2810" stroke-width="2" stroke-linecap="round" fill="none"/>
+              <path class="puppy-tongue" d="M116 140 Q120 152 124 140 Z" fill="#FF7F9F"/>
+
+              <!-- Eyes with blink animation -->
+              <g class="puppy-eyes">
+                <!-- Left Eye -->
+                <ellipse cx="98" cy="108" rx="7.5" ry="9" fill="#3D2010"/>
+                <circle cx="95" cy="104" r="3" fill="#FFFFFF"/>
+                <circle cx="101" cy="111" r="1.5" fill="#FFFFFF"/>
+                <!-- Right Eye -->
+                <ellipse cx="142" cy="108" rx="7.5" ry="9" fill="#3D2010"/>
+                <circle cx="139" cy="104" r="3" fill="#FFFFFF"/>
+                <circle cx="145" cy="111" r="1.5" fill="#FFFFFF"/>
+              </g>
+
+              <!-- Rosy Cheeks -->
+              <circle cx="86" cy="126" r="8" fill="#FF8BA7" opacity="0.45"/>
+              <circle cx="154" cy="126" r="8" fill="#FF8BA7" opacity="0.45"/>
+
+              <!-- Party Hat -->
+              <g class="party-hat">
+                <polygon points="120,24 94,80 146,80" fill="url(#hatGrad)" stroke="#7B3158" stroke-width="2.5"/>
+                <circle cx="120" cy="22" r="7" fill="#FFE066" stroke="#C59B00" stroke-width="1.5"/>
+                <!-- Hat Patterns -->
+                <circle cx="120" cy="46" r="3" fill="#FFFFFF"/>
+                <circle cx="110" cy="62" r="3.5" fill="#FFE066"/>
+                <circle cx="130" cy="64" r="3" fill="#FFFFFF"/>
+                <circle cx="120" cy="74" r="3" fill="#FFE066"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Petting Prompt & Live Counter -->
+          <div class="pet-prompt-pill" id="pet-prompt-pill">
+            <span class="pet-icon" aria-hidden="true">🐾</span>
+            <span class="pet-status-msg" id="pet-status-msg">Tap puppy for headpats!</span>
+            <span class="pet-count-pill" id="pet-count-display">Pets: 0</span>
+          </div>
+        </div>
+
+        <div class="badge-pill">
+          <span class="pulse-indicator"></span>
+          <span>Incoming Birthday Transmission 🐾</span>
+        </div>
+
+        <h1 class="hero-title" id="welcome-heading">Hey, Vaishnavi! 🎉</h1>
+        <p class="hero-subtitle">A very official birthday mission has arrived.</p>
+        <p class="hero-tagline">No office emails. No hair-related overthinking. Only good vibes.</p>
+
+        <div class="action-wrap">
+          <button id="btn-start-mission" class="btn btn-primary btn-pulse" type="button">
+            <span>Start the birthday mission</span>
+            <span class="btn-icon">✨</span>
+          </button>
+        </div>
+
+        <div class="note-disclaimer" aria-hidden="true">
+          <span>🐾 Guaranteed 100% wholesome & drama-free</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 1: MISSION ONE - CHOOSE YOUR ASSISTANT
+         ============================================== -->
+    <section class="screen-view" id="screen-assistant" aria-labelledby="assistant-heading">
+      <div class="card card-mission">
+        <div class="card-header">
+          <span class="mission-tag">Mission 01 / 03</span>
+          <h2 class="section-title" id="assistant-heading">First, choose your birthday assistant 🐾</h2>
+          <p class="section-desc">Choose wisely. They are all highly qualified in doing absolutely nothing.</p>
+        </div>
+
+        <!-- 3 Character Cards Grid -->
+        <div class="assistant-grid" role="radiogroup" aria-label="Choose your birthday assistant">
+
+          <!-- Option A: Dog -->
+          <div class="assistant-card" id="card-dog" role="radio" aria-checked="false" tabindex="0" data-assistant="dog">
+            <div class="card-avatar-wrap">
+              <div class="card-avatar" aria-hidden="true">🐶</div>
+              <span class="badge-status">Wag Level: 100%</span>
+            </div>
+            <div class="card-info">
+              <h3 class="assistant-name">Dog</h3>
+              <p class="assistant-role">Chief Happiness Officer</p>
+              <p class="assistant-specialty">Expert in tail-wagging.</p>
+            </div>
+            <div class="selection-check" aria-hidden="true">✓</div>
+          </div>
+
+          <!-- Option B: Cat -->
+          <div class="assistant-card" id="card-cat" role="radio" aria-checked="false" tabindex="0" data-assistant="cat">
+            <div class="card-avatar-wrap">
+              <div class="card-avatar" aria-hidden="true">🐱</div>
+              <span class="badge-status">Doze Level: 999%</span>
+            </div>
+            <div class="card-info">
+              <h3 class="assistant-name">Cat</h3>
+              <p class="assistant-role">Chief Nap Officer</p>
+              <p class="assistant-specialty">Expert in ignoring deadlines.</p>
+            </div>
+            <div class="selection-check" aria-hidden="true">✓</div>
+          </div>
+
+          <!-- Option C: Panda -->
+          <div class="assistant-card" id="card-panda" role="radio" aria-checked="false" tabindex="0" data-assistant="panda">
+            <div class="card-avatar-wrap">
+              <div class="card-avatar" aria-hidden="true">🐼</div>
+              <span class="badge-status">Snack Radar: Active</span>
+            </div>
+            <div class="card-info">
+              <h3 class="assistant-name">Panda</h3>
+              <p class="assistant-role">Chief Snack Officer</p>
+              <p class="assistant-specialty">Expert in snack inspections.</p>
+            </div>
+            <div class="selection-check" aria-hidden="true">✓</div>
+          </div>
+
+        </div>
+
+        <!-- Dynamic Response Box (Appears when an assistant is selected) -->
+        <div class="assistant-feedback" id="assistant-feedback" aria-live="polite" style="display: none;">
+          <div class="feedback-bubble">
+            <span class="bubble-icon" id="feedback-icon" aria-hidden="true">🐶</span>
+            <div class="bubble-content">
+              <h4 class="bubble-title" id="feedback-title">Assistant Status</h4>
+              <p class="bubble-text" id="feedback-text">Select an assistant to see their mission credentials.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Surprise Button (Revealed only after selection) -->
+        <div class="action-wrap" id="assistant-action-wrap" style="display: none;">
+          <button id="btn-next-to-notifications" class="btn btn-primary" type="button">
+            <span>Okay, next surprise</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 2: MISSION TWO - BIRTHDAY NOTIFICATIONS
+         ============================================== -->
+    <section class="screen-view" id="screen-notifications" aria-labelledby="notifications-heading">
+      <div class="card card-mission">
+        <div class="card-header">
+          <span class="mission-tag">Mission 02 / 03</span>
+          <h2 class="section-title" id="notifications-heading">Important birthday notifications 📢</h2>
+          <p class="section-desc">The high-priority feed for today's VIP.</p>
+        </div>
+
+        <!-- Notification Feed with real-life iOS/Android Push Notification styling -->
+        <div class="notifications-list" id="notifications-list" role="region" aria-label="Notification list">
+
+          <!-- Notification 1: Office -->
+          <article class="notification-item notify-office" id="notify-1">
+            <div class="notify-icon-box" aria-hidden="true">
+              <span class="notify-icon">💼</span>
+            </div>
+            <div class="notify-content">
+              <div class="notify-header">
+                <span class="notify-app-name">Office Slack / Outlook</span>
+                <span class="notify-timestamp">Just now</span>
+              </div>
+              <p class="notify-body">
+                Work stress: temporarily placed on airplane mode. Please try again tomorrow.
+              </p>
+            </div>
+            <span class="notify-badge-pill" aria-hidden="true">SILENCED</span>
+          </article>
+
+          <!-- Notification 2: Hair -->
+          <article class="notification-item notify-hair" id="notify-2">
+            <div class="notify-icon-box" aria-hidden="true">
+              <span class="notify-icon">💇‍♀️</span>
+            </div>
+            <div class="notify-content">
+              <div class="notify-header">
+                <span class="notify-app-name">Hair & Styling Department</span>
+                <span class="notify-timestamp">1m ago</span>
+              </div>
+              <p class="notify-body">
+                Hair overthinking: your brain has been asked to take a paid day off. 😂
+              </p>
+            </div>
+            <span class="notify-badge-pill" aria-hidden="true">APPROVED</span>
+          </article>
+
+          <!-- Notification 3: Dog Department -->
+          <article class="notification-item notify-dog" id="notify-3">
+            <div class="notify-icon-box" aria-hidden="true">
+              <span class="notify-icon">🐾</span>
+            </div>
+            <div class="notify-content">
+              <div class="notify-header">
+                <span class="notify-app-name">Official Dog Department 🐕</span>
+                <span class="notify-timestamp">Official notice</span>
+              </div>
+              <p class="notify-body">
+                Dog department officially declares you deserving of extra treats and zero drama.
+              </p>
+            </div>
+            <span class="notify-badge-pill" aria-hidden="true">100% CERTIFIED</span>
+          </article>
+
+        </div>
+
+        <!-- Advance to Candle Wish Button -->
+        <div class="action-wrap">
+          <button id="btn-to-candle" class="btn btn-primary btn-pulse" type="button">
+            <span>Make your birthday wish</span>
+            <span class="btn-icon">🎂</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 2.5: MISSION THREE - THE BIRTHDAY WISH & CANDLE
+         ============================================== -->
+    <section class="screen-view" id="screen-candle" aria-labelledby="candle-heading">
+      <div class="card card-mission card-candle">
+        <div class="card-header">
+          <span class="mission-tag">Mission 03 / 04</span>
+          <h2 class="section-title" id="candle-heading">Make a birthday wish, Vaishnavi! 🕯️</h2>
+          <p class="section-desc">Close your eyes, think of something you genuinely want this year, and blow out the candle.</p>
+        </div>
+
+        <div class="candle-rule-pill">
+          <span>🙅‍♀️ Strict rule: Wish cannot be about office emails or hair salon debates!</span>
+        </div>
+
+        <!-- Interactive Birthday Cake with Flickering Candle -->
+        <div class="cake-container" id="cake-container" role="button" tabindex="0" aria-label="Tap to blow out the birthday candle">
+          <div class="candle-smoke" id="candle-smoke" aria-hidden="true">💨</div>
+          
+          <svg class="cake-svg" id="cake-svg-elem" viewBox="0 0 200 190" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="flameGlowGrad" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#FFE082" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#FFE082" stop-opacity="0"/>
+              </radialGradient>
+              <linearGradient id="flameGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#FFF59D"/>
+                <stop offset="50%" stop-color="#FF9100"/>
+                <stop offset="100%" stop-color="#FF3D00"/>
+              </linearGradient>
+              <linearGradient id="frostingGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#FF6F9F"/>
+                <stop offset="100%" stop-color="#FF8EAA"/>
+              </linearGradient>
+            </defs>
+
+            <!-- Flame Halo Glow -->
+            <ellipse class="flame-halo" id="flame-halo" cx="100" cy="38" rx="22" ry="26" fill="url(#flameGlowGrad)"/>
+
+            <!-- Flickering Flame Core -->
+            <g class="candle-flame-group" id="candle-flame-group">
+              <path class="flame-body" d="M100 20 Q110 35 100 50 Q90 35 100 20 Z" fill="url(#flameGrad)"/>
+              <ellipse cx="100" cy="40" rx="3.5" ry="6" fill="#FFFFFF" opacity="0.8"/>
+            </g>
+
+            <!-- Wick -->
+            <line x1="100" y1="50" x2="100" y2="57" stroke="#3D2010" stroke-width="2.5" stroke-linecap="round"/>
+
+            <!-- Candle Cylinder -->
+            <rect x="94" y="57" width="12" height="36" rx="3" fill="#FFF0F5" stroke="#FF6F9F" stroke-width="2"/>
+            <path d="M94 66 L106 72" stroke="#FF6F9F" stroke-width="2" stroke-linecap="round"/>
+            <path d="M94 76 L106 82" stroke="#FF6F9F" stroke-width="2" stroke-linecap="round"/>
+
+            <!-- Cake Top Tier -->
+            <rect x="58" y="93" width="84" height="38" rx="8" fill="#FFFDF8" stroke="#E28743" stroke-width="2.5"/>
+            <!-- Top Frosting Drips -->
+            <path d="M58 98 Q68 106 78 98 Q88 108 98 98 Q108 108 118 98 Q128 108 138 98 L142 96" fill="none" stroke="url(#frostingGrad)" stroke-width="4.5" stroke-linecap="round"/>
+
+            <!-- Cake Bottom Tier -->
+            <rect x="36" y="130" width="128" height="46" rx="10" fill="#FFD6A5" stroke="#C56A2B" stroke-width="2.5"/>
+            <!-- Bottom Frosting Drips -->
+            <path d="M36 137 Q50 148 65 137 Q80 148 95 137 Q110 148 125 137 Q140 148 155 137 L164 136" fill="none" stroke="url(#frostingGrad)" stroke-width="5" stroke-linecap="round"/>
+
+            <!-- Colorful Sprinkles -->
+            <circle cx="72" cy="116" r="3" fill="#FF6F9F"/>
+            <circle cx="98" cy="114" r="3" fill="#9A7BFF"/>
+            <circle cx="124" cy="118" r="3" fill="#FFE066"/>
+            <circle cx="56" cy="156" r="3.5" fill="#FF6F9F"/>
+            <circle cx="85" cy="162" r="3.5" fill="#FFE066"/>
+            <circle cx="114" cy="158" r="3.5" fill="#9A7BFF"/>
+            <circle cx="144" cy="162" r="3.5" fill="#48CAE4"/>
+
+            <!-- Plate -->
+            <ellipse cx="100" cy="178" rx="76" ry="9" fill="#FFFFFF" stroke="#C56A2B" stroke-width="2.5"/>
+          </svg>
+        </div>
+
+        <div class="wish-status-box" id="wish-status-box">
+          <p class="wish-instruction" id="wish-instruction-text">Tap the cake or button below to blow out your candle!</p>
+        </div>
+
+        <!-- Blow Out Button -->
+        <div class="action-wrap" id="blow-action-wrap">
+          <button id="btn-blow-candle" class="btn btn-primary btn-pulse" type="button">
+            <span>Blow out the candle</span>
+            <span class="btn-icon">💨</span>
+          </button>
+        </div>
+
+        <!-- Next to Letter Button (Hidden until candle is blown) -->
+        <div class="action-wrap" id="candle-next-wrap" style="display: none;">
+          <button id="btn-unlock-letter" class="btn btn-secondary btn-bounce" type="button">
+            <span>Unlock your birthday note</span>
+            <span class="btn-icon">💌</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ==============================================
+         SCREEN 4: FINAL MISSION - LETTER & DIGITAL VOUCHER
+         ============================================== -->
+    <section class="screen-view" id="screen-letter" aria-labelledby="letter-heading">
+      
+      <!-- Stitched Stationery Letter Card -->
+      <article class="card card-letter" id="letter-card">
+        
+        <!-- Wax seal / decorative stamp -->
+        <div class="letter-stamp" aria-hidden="true">
+          <span class="stamp-icon">🐾</span>
+          <span class="stamp-text">FOR VAISHNAVI</span>
+        </div>
+
+        <div class="letter-inner">
+          <div class="letter-top-deco" aria-hidden="true">
+            <span>✨</span>
+            <span>🌸</span>
+            <span>🐾</span>
+            <span>🎂</span>
+            <span>✨</span>
+          </div>
+
+          <h2 class="letter-title" id="letter-heading">Happy Birthday, Vaishnavi! 🥳</h2>
+
+          <div class="letter-body">
+            <p class="letter-p">Okay, birthday girl, here's your official reminder:</p>
+            
+            <p class="letter-p highlight-p">
+              I hope this year brings you lots of reasons to laugh, good people around you, less work stress, and plenty of time to do things that make you happy. ❤️
+            </p>
+
+            <p class="letter-p">
+              And please remember: not every little thing needs a full investigation committee… especially hair days. 😂
+            </p>
+
+            <p class="letter-p">
+              Keep being your fun, slightly chaotic self. Have a lovely birthday and do something nice for yourself today. You deserve it! ✨
+            </p>
+
+            <div class="letter-signature">
+              <p class="sig-line">— Your friendly birthday-surprise department 🐾</p>
+            </div>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- Voucher Reveal Trigger Area -->
+      <div class="action-wrap voucher-action-wrap" id="voucher-trigger-section">
+        <button id="btn-reveal-voucher" class="btn btn-secondary btn-bounce" type="button">
+          <span>One last tiny surprise</span>
+          <span class="btn-icon">🎁</span>
+        </button>
+      </div>
+
+      <!-- DIGITAL TREAT VOUCHER (Reveals dynamically upon click) -->
+      <section class="voucher-wrapper" id="voucher-container" aria-labelledby="voucher-heading" style="display: none;">
+        <div class="voucher-card" id="voucher-card">
+          
+          <div class="voucher-cutout cutout-left" aria-hidden="true"></div>
+          <div class="voucher-cutout cutout-right" aria-hidden="true"></div>
+
+          <div class="voucher-header">
+            <span class="voucher-icon" aria-hidden="true">🦴</span>
+            <h3 class="voucher-title" id="voucher-heading">OFFICIAL TREAT VOUCHER! 🦴</h3>
+          </div>
+
+          <div class="voucher-divider" aria-hidden="true">
+            <span class="dash-line"></span>
+            <span class="scissors">✂</span>
+            <span class="dash-line"></span>
+          </div>
+
+          <div class="voucher-body">
+            <div class="voucher-hero-badge" aria-hidden="true">🍰</div>
+            <p class="voucher-main-offer">Redeem for one dessert of your choice 🍰</p>
+            <div class="voucher-terms">
+              <p><strong>Terms & conditions:</strong> birthday girl chooses the treat. Complaints accepted only with cake.</p>
+            </div>
+            <div class="voucher-meta">
+              <span class="meta-tag">Code: VAISHNAVI-BDAY-TREAT</span>
+              <span class="meta-tag">Expiry: Never ♾️</span>
+            </div>
+          </div>
+
+          <div class="voucher-footer">
+            <span class="voucher-seal">✓ 100% Redeemable in Good Spirits</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Replay / Reset Controls -->
+      <div class="replay-wrap" id="replay-wrap">
+        <button id="btn-replay" class="btn btn-ghost" type="button" aria-label="Replay the entire mission">
+          <span>Replay the mission</span>
+          <span class="btn-icon">↻</span>
+        </button>
+        <p class="replay-hint">Made with care for Vaishnavi's special day 🐾</p>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Live Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Accessible Skip to Content Link -->
+  <a href="#main-content" class="skip-link">Skip to birthday surprises</a>
+
+  <script src="script.js"></script>
+</body>
+</html>
